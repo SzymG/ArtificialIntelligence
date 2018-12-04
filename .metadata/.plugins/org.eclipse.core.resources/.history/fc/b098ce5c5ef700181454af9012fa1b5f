@@ -1,0 +1,119 @@
+package com.sample;
+
+import javax.swing.*;
+import java.awt.*;
+
+
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+
+/**
+ * This is a sample class to launch a rule.
+ */
+public class DroolsTest {
+
+    public static final void main(String[] args) {
+        try {
+            // load up the knowledge base
+        	
+        	 // KieServices is the factory for all KIE services
+	        KieServices ks = KieServices.Factory.get();
+	        
+	        // From the kie services, a container is created from the classpath
+    	    KieContainer kContainer = ks.getKieClasspathContainer();
+            // go !
+        	
+        	new Message().init(kContainer, true);
+        	
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    public static class Message {
+
+		public void init(KieContainer kc, boolean exitOnClose) {
+			
+			//The callback is responsible for populating working memory and
+	        // fireing all rules
+	        RomanticUI ui = new RomanticUI( new CheckoutCallback( kc ) );
+	        ui.createAndShowGUI(exitOnClose);
+		}
+
+		public static class RomanticUI extends JPanel {
+			
+			private static final long serialVersionUID = 510l;
+
+	        private CheckoutCallback callback;
+
+			public RomanticUI(CheckoutCallback callback) {
+				
+				this.callback = callback;
+				
+				this.setLayout(null);
+				this.setPreferredSize(new Dimension(800,600));
+				
+				String[] petStrings = { "Bird", "Cat", "Dog", "Rabbit", "Pig" };
+
+				//Create the combo box, select item at index 4.
+				//Indices start at 0, so 4 specifies the pig.
+				JComboBox petList = new JComboBox(petStrings);
+				petList.setPreferredSize(new Dimension(120, 30));
+				petList.setLocation(100,100);
+				
+				this.add(petList);
+				//petList.addActionListener(this);
+				
+				/*Object[] possibilities = {"ham", "spam", "yam"};
+				String s = (String)JOptionPane.showInputDialog(
+				                    null,
+				                    "Complete the sentence:\n"
+				                    + "\"Green eggs and...\"",
+				                    "Customized Dialog",
+				                    JOptionPane.PLAIN_MESSAGE,
+				                    null,
+				                    possibilities,
+				                    "ham");
+
+				//If a string was returned, say so.
+				if ((s != null) && (s.length() > 0)) {
+				    System.out.println("Green eggs and... " + s + "!");
+				    return;
+				}
+
+				//If you're here, the return value was null/empty.
+				System.out.println("Come on, finish the sentence!");*/
+	            
+			}
+
+			public void createAndShowGUI(boolean exitOnClose) {
+				//Create and set up the window.
+	            JFrame frame = new JFrame( "Romantic Movie" );
+	            frame.setDefaultCloseOperation(exitOnClose ? JFrame.EXIT_ON_CLOSE : JFrame.DISPOSE_ON_CLOSE);
+
+	            setOpaque( true );
+	            frame.setContentPane( this );
+
+	            //Display the window.
+	            frame.pack();
+	            frame.setLocationRelativeTo(null); // Center in screen
+	            
+	            frame.setVisible( true );
+				
+			}
+			
+		}
+		
+		public static class CheckoutCallback {
+	        KieContainer kcontainer;
+	        JTextArea     output;
+
+	        public CheckoutCallback(KieContainer kcontainer) {
+	            this.kcontainer = kcontainer;
+	        }
+		}
+
+    }
+
+}
