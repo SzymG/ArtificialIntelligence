@@ -55,17 +55,12 @@ public class DroolsTest {
 				this.setPreferredSize(new Dimension(800,600));
 				
 				String[] petStrings = { "My main squeeze", "My family"};
-
-				JComboBox petList = new JComboBox(petStrings);
-				petList.setBounds(200,360,400,100);
 				
-				
-				this.add(petList);
-				
-				JButton b1 = new JButton("Enter!");
-				b1.setBounds(300,500,200,80);
-				
-				this.add(b1);
+				for(int i = 0; i < petStrings.length; i++){
+					JButton tmp = new JButton(petStrings[i]);
+					tmp.setBounds(200 + 210*i, 400, 200, 100);
+					this.add(tmp);
+				}
 				
 				JLabel l1 = new JLabel("obrazek", SwingConstants.CENTER);
 				l1.setBorder(LineBorder.createGrayLineBorder());

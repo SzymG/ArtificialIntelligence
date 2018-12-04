@@ -1,13 +1,13 @@
 package com.sample;
 
 import javax.swing.*;
-import java.awt.*;
+import javax.swing.border.LineBorder;
 
+import java.awt.*;
 
 import org.kie.api.KieServices;
 import org.kie.api.runtime.KieContainer;
 import org.kie.api.runtime.KieSession;
-import org.kie.api.logger.*;
 
 /**
  * This is a sample class to launch a rule.
@@ -46,47 +46,53 @@ public class DroolsTest {
 			
 			private static final long serialVersionUID = 510l;
 
-	        private CheckoutCallback callback;
-
+	        private CheckoutCallback callback;    //Co bêdzie siê dzia³o po wciœnieciu przycisku
 
 			public RomanticUI(CheckoutCallback callback) {
 				
-				super( new BorderLayout() );
 				this.callback = callback;
+				
+				this.setPreferredSize(new Dimension(800,600));
+				
+				String[] petStrings = { "My main squeeze", "My family"};
+				
+				for(int i = 0; i < petStrings.length; i++){
+					JButton tmp = new JButton(petStrings[i]);
+					tmp.setBounds(200 + 110*i, 360, 100, 50);
+					this.add(tmp);
+				}
+				
+				JButton b1 = new JButton("Enter!");
+				b1.setBounds(300,500,200,80);
+				
+				this.add(b1);
+				
+				JLabel l1 = new JLabel("obrazek", SwingConstants.CENTER);
+				l1.setBorder(LineBorder.createGrayLineBorder());
+				l1.setBounds(10,10,780,200);
+				
+				this.add(l1);
+				
+				JLabel l2 = new JLabel("WHO ARE YOU WATHING IT WITH?", SwingConstants.CENTER);
+				l2.setBorder(LineBorder.createGrayLineBorder());
+				l2.setBounds(10,250,780,100);
+				
+				this.add(l2);
 	            
 			}
 
 			public void createAndShowGUI(boolean exitOnClose) {
 				//Create and set up the window.
-	            JFrame frame = new JFrame( "Pet Store Demo" );
+	            JFrame frame = new JFrame( "Romantic Movie" );
 	            frame.setDefaultCloseOperation(exitOnClose ? JFrame.EXIT_ON_CLOSE : JFrame.DISPOSE_ON_CLOSE);
 
 	            setOpaque( true );
 	            frame.setContentPane( this );
+	            frame.setLayout(null);
 
 	            //Display the window.
 	            frame.pack();
 	            frame.setLocationRelativeTo(null); // Center in screen
-	            
-	            Object[] possibilities = {"ham", "spam", "yam"};
-				String s = (String)JOptionPane.showInputDialog(
-				                    frame,
-				                    "Complete the sentence:\n"
-				                    + "\"Green eggs and...\"",
-				                    "Customized Dialog",
-				                    JOptionPane.PLAIN_MESSAGE,
-				                    null,
-				                    possibilities,
-				                    "ham");
-
-				//If a string was returned, say so.
-				if ((s != null) && (s.length() > 0)) {
-				    System.out.println("Green eggs and... " + s + "!");
-				    return;
-				}
-
-				//If you're here, the return value was null/empty.
-				System.out.println("Come on, finish the sentence!");
 	            
 	            frame.setVisible( true );
 				
