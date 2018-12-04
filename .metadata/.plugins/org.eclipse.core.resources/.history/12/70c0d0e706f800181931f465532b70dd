@@ -110,13 +110,7 @@ public class DroolsTest {
 			}
 
 			public void actionPerformed(ActionEvent e) {
-				
 				//TODO co sie dzieje po wciœniêciu przycisku zatwierdzenia odpowiedzi
-				// Nie mam pomys³u jak to rozwi¹zaæ na razie bo musimy wiedzieæ jakiemu pytaniu
-				// nale¿y ustawiæ odpowiedŸ a po drugie takie ustawienie samemu odpowiedzi 
-				// nie wiem czy jest dozwolone, czy nie trzeba zrobiæ tak ¿e system regulowy
-				// jakos wykrywa ze nacisnelismy i sam ustawia odpowiedz
-				
 				if(e.getSource() == answers[0]){
 					System.out.println("0 button");
 				}
@@ -132,8 +126,8 @@ public class DroolsTest {
      **/
     public static class Question{
     	
-    	public String content, picked_answer;
-    	public String[] answers;
+    	private String content, picked_answer;
+    	private String[] answers;
     	
     	public Question(String q, String[] ans){
     		this.content = q;

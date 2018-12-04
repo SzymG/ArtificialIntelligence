@@ -132,8 +132,8 @@ public class DroolsTest {
      **/
     public static class Question{
     	
-    	public String content, picked_answer;
-    	public String[] answers;
+    	private String content, picked_answer;
+    	private String[] answers;
     	
     	public Question(String q, String[] ans){
     		this.content = q;

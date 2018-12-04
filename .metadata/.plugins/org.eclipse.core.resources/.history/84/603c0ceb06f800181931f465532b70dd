@@ -9,10 +9,3 @@ rule "Init"
 	then
 		q.setGUI(q.getContent(),q.getAnswers());
 end
-
-rule "First"
-	when 
-		q : Question( picked_answer != null )
-	then
-		System.out.println(q.content + " ANSWER " + q.picked_answer);
-end
