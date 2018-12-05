@@ -37,14 +37,14 @@ INDEX VERSION 1.126+C:\Users\szymo\OneDrive\Pulpit\ArtificialIntelligence\.metad
 3563128127.index
 1456511372.index
 98169915.index
+2088271277.index
 1992675294.index
 3633269065.index
 3717788550.index
-2088271277.index
 3329958494.index
 622583978.index
-2611404287.index
 3093470768.index
+2611404287.index
 834318189.index
 800766113.index
 152683794.index

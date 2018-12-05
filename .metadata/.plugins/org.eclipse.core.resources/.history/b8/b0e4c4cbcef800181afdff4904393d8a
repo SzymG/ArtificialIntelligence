@@ -1,0 +1,194 @@
+package com.sample;
+
+import javax.swing.*;
+import javax.swing.border.LineBorder;
+
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import org.kie.api.KieServices;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
+import org.kie.api.runtime.rule.FactHandle;
+
+import com.sample.DroolsTest.Message.RomanticUI;
+
+/**
+ * This is a sample class to launch a rule.
+ */
+public class DroolsTest {
+
+    public static final void main(String[] args) {
+        try {
+        	 // KieServices is the factory for all KIE services
+	        KieServices ks = KieServices.Factory.get();
+	        // From the kie services, a container is created from the classpath
+    	    KieContainer kContainer = ks.getKieClasspathContainer();    
+        	KieSession kSession = kContainer.newKieSession("ksession-rules");     	
+       	
+        	String q = "WHO ARE YOU WATCHING IT WITH?";
+        	String[] possibilities = { "My main squeeze", "My family"};
+        	Question question = new Question(q, possibilities);			//Dodaje do pamiêci pierwsze pytanie
+        	question.setInit("1");
+        	
+        	FactHandle handle = kSession.insert(question);
+        	new Message().init(true, handle, kSession);
+            kSession.fireAllRules();
+            
+        	
+        	
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    public static class Message {
+    	
+    	public static Question active;
+		private static FactHandle handle;
+		private static KieSession kSession;
+
+		public void init( boolean exitOnClose, FactHandle handle, KieSession kSession) {
+
+	        RomanticUI ui = new RomanticUI( );
+	        ui.createAndShowGUI(exitOnClose);
+	        this.handle = handle;
+	        this.kSession = kSession;
+		}
+
+		public static class RomanticUI extends JPanel implements ActionListener {
+			
+			private static final long serialVersionUID = 510l;
+	        
+	        private static JButton answers[] = new JButton[3];	//Mo¿liwe odpowiedzi
+			private static JLabel l2;							//Treœæ pytania
+
+			public RomanticUI() {
+				
+				
+				this.setPreferredSize(new Dimension(800,600));
+							
+				for(int i = 0; i < 3; i++){						//Ustawiam przyciski
+					JButton tmp = new JButton(String.valueOf(i));
+					tmp.setBounds(20 + 260*i, 400, 250, 100);
+					tmp.addActionListener(this);
+					answers[i] = tmp;		//tablica z przyciskami do odpowiedzi
+					this.add(tmp);
+				}
+																//Label z pytaniem
+				JLabel l1 = new JLabel("obrazek", SwingConstants.CENTER);
+				l1.setBorder(LineBorder.createGrayLineBorder());
+				l1.setBounds(10,10,780,200);
+				
+				this.add(l1);
+				
+				l2 = new JLabel("Pytanie", SwingConstants.CENTER);
+				l2.setBorder(LineBorder.createGrayLineBorder());
+				l2.setBounds(10,250,780,100);
+				
+				this.add(l2);
+	            
+			}
+
+			public void createAndShowGUI(boolean exitOnClose) {
+				//Create and set up the window.
+	            JFrame frame = new JFrame( "Romantic Movie" );
+	            frame.setDefaultCloseOperation(exitOnClose ? JFrame.EXIT_ON_CLOSE : JFrame.DISPOSE_ON_CLOSE);
+
+	            setOpaque( true );
+	            frame.setContentPane( this );
+	            frame.setLayout(null);
+
+	            //Display the window.
+	            frame.pack();
+	            frame.setLocationRelativeTo(null); // Center in screen
+	            
+	            frame.setVisible( true );
+				
+			}
+			/**
+			 * Metoda ustawiaj¹ca treœci pytania i odpowiedzi na labelu
+			 * i przyciskach, po wykryciu przez regu³ê
+			 * */
+			public static void setGUI(String question, String[] possibilities){
+				
+				l2.setText(question);
+				for(int i = 0; i < possibilities.length; i++){
+					
+					System.out.println(possibilities.length);
+					answers[i].setText(possibilities[i]);
+					
+					if(answers.length - possibilities.length == 1){	//Mniejsza ilosc odp ni¿ 3
+						answers[2].setVisible(false);
+					}
+				}
+			}
+
+			public void actionPerformed(ActionEvent e) {
+				
+				//TODO co sie dzieje po wciœniêciu przycisku zatwierdzenia odpowiedzi
+				// Nie mam pomys³u jak to rozwi¹zaæ na razie bo musimy wiedzieæ jakiemu pytaniu
+				// nale¿y ustawiæ odpowiedŸ a po drugie takie ustawienie samemu odpowiedzi 
+				// nie wiem czy jest dozwolone, czy nie trzeba zrobiæ tak ¿e system regulowy
+				// jakos wykrywa ze nacisnelismy i sam ustawia odpowiedz
+				
+				if(e.getSource() == answers[0]){
+					
+					active.setPickedAnswer(active.getAnswers()[0]);
+					kSession.update(handle, active);
+					kSession.fireAllRules(); 
+				}
+				else if(e.getSource() == answers[1]){
+					
+					active.setPickedAnswer(active.getAnswers()[1]);
+					kSession.update(handle, active);
+					kSession.fireAllRules();
+				}
+			}
+		}
+    }
+    /**
+     * Klasa której obiektem jest pytanie z dan¹ treœci¹ i mo¿liwymi odpowiedziami
+     * dodatkowo rozró¿niamy pole picked_answer oznaczaj¹ce wybran¹ odpowiedz przez u¿ytkownika
+     **/
+    public static class Question{
+    	
+    	public String content, picked_answer,is_init;
+    	public String[] answers;
+    	
+    	public Question(String q, String[] ans){
+    		this.content = q;
+    		this.answers = ans;
+    		this.picked_answer = null;
+    		this.is_init = null;
+    	}
+    	
+    	public String getPickedAnswer() {
+			return picked_answer;
+		}
+    	    	
+    	public String getContent(){
+    		return content;
+    	}
+
+		public String[] getAnswers() {
+			return answers;
+		}
+		
+		public void setInit(String b){
+			this.is_init = b;
+		}
+		
+		public void setPickedAnswer(String answer) {
+			this.picked_answer = answer;
+		}
+		
+		public static void setGUI(String question, String[] possibilities){
+			RomanticUI.setGUI(question, possibilities);
+		}
+		public static void setActiveQuestion(Question q){
+			Message.active = q;
+		}
+    }
+}

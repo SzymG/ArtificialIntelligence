@@ -1,0 +1,20 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+import com.sample.DroolsTest.Question;
+
+rule "Init"
+	when 
+		q : Question( content != null )
+	then
+		q.setGUI(q.getContent(),q.getAnswers());
+		q.setActive
+		System.out.println("First question!");
+end
+
+rule "First"
+	when 
+		q : Question( picked_answer != null )
+	then
+		System.out.println(q.content + " ANSWER " + q.picked_answer);
+end

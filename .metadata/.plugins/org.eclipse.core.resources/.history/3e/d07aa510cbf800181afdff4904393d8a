@@ -1,0 +1,23 @@
+package com.sample
+ 
+import com.sample.DroolsTest.Message;
+import com.sample.DroolsTest.Question;
+
+rule "Init"
+	when 
+		q : Question( is_init != null )
+	then
+		q.setActiveQuestion(q);
+		q.setGUI(q.getContent(),q.getAnswers());
+		q.setInit(null);
+		System.out.println("First question!");
+end
+
+rule "First"
+	when 
+		q : Question( content == "WHO ARE YOU WATCHING IT WITH?", picked_answer == "My main squeeze" )
+	then
+		String possib = {"YES","NO"};
+		insert (new Question("DO YOU CARE IF HE ENJOYS IT?",possib));
+		System.out.println(q.content + " ANSWER " + q.picked_answer);
+end

@@ -16,4 +16,9 @@
 <fullyQualifiedTypeName name="javax.swing.border.LineBorder"/>
 <fullyQualifiedTypeName name="java.awt.event.ActionListener"/>
 <fullyQualifiedTypeName name="com.sample.DroolsTest.Message.RomanticUI"/>
+<fullyQualifiedTypeName name="org.drools.core.marshalling.impl.ProtobufMessages.FactHandle"/>
+<fullyQualifiedTypeName name="org.kie.api.runtime.rule.FactHandle"/>
+<fullyQualifiedTypeName name="javax.swing.border.Border"/>
+<fullyQualifiedTypeName name="javax.swing.border.CompoundBorder"/>
+<fullyQualifiedTypeName name="java.awt.Color"/>
 </qualifiedTypeNameHistroy>
